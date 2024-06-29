@@ -4480,15 +4480,18 @@ function validate(azPath, command, failOnNonZeroExit) {
 }
 function callAzCli(azPath, command, options) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info(`Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`);
-        process.stderr.on("data", (data) => {
-            console.error(`Standard Error Output: ${data}`);
-        });
+        let stderr = "";
+        options.listeners = {
+            stderr: (data) => {
+                stderr += data.toString();
+            },
+        };
+        core.info(`Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}. Command: ${JSON.stringify(command)}`);
         try {
             return yield (0, exec_1.exec)(`"${azPath}" ${command}`, [], options);
         }
         catch (e) {
-            core.error(e);
+            core.info(`Standard Error Output: ${stderr}`);
             throw e;
         }
     });

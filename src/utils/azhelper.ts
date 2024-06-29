@@ -106,16 +106,19 @@ async function callAzCli(
   command: string,
   options: ExecOptions
 ) {
+  let stderr = "";
+  options.listeners = {
+    stderr: (data) => {
+      stderr += data.toString();
+    },
+  };
   core.info(
-    `Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`
+    `Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}. Command: ${JSON.stringify(command)}`
   );
-  process.stderr.on("data", (data) => {
-    console.error(`Standard Error Output: ${data}`);
-  });
   try {
     return await exec(`"${azPath}" ${command}`, [], options);
   } catch (e) {
-    core.error(e as Error);
+    core.info(`Standard Error Output: ${stderr}`);
     throw e;
   }
 }

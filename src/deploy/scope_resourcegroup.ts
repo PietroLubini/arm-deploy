@@ -12,8 +12,9 @@ export async function deployResourceGroupScope(
   deploymentName: string,
   parameters: string | undefined,
   failOnStdErr: boolean,
-  additionalArguments: string | undefined,
+  additionalArguments: string | undefined
 ): Promise<DeploymentResult | undefined> {
+  core.info("Deploying to resource group scope...");
   // Check if resourceGroupName is set
   if (!resourceGroupName) {
     throw Error("ResourceGroup name must be set.");
@@ -37,7 +38,7 @@ export async function deployResourceGroupScope(
       ? `--mode ${deploymentMode}`
       : "--mode Incremental",
     deploymentName ? `--name "${deploymentName}"` : undefined,
-    parameters ? `--parameters ${parameters}` : undefined,
+    parameters ? `--parameters ${parameters}` : undefined
   );
 
   let azDeployParameters = validateParameters;
@@ -49,7 +50,7 @@ export async function deployResourceGroupScope(
   core.info("Validating template...");
   await azCli.validate(
     `deployment group validate ${validateParameters} -o json`,
-    deploymentMode === "validate",
+    deploymentMode === "validate"
   );
 
   if (deploymentMode != "validate") {
@@ -57,7 +58,7 @@ export async function deployResourceGroupScope(
     core.info("Creating deployment...");
     return await azCli.deploy(
       `deployment group create ${azDeployParameters} -o json`,
-      failOnStdErr,
+      failOnStdErr
     );
   }
 }

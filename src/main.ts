@@ -62,7 +62,7 @@ async function populateOptions(): Promise<Options> {
 }
 
 export async function deploy(
-  options: Options,
+  options: Options
 ): Promise<DeploymentResult | undefined> {
   // determine az path
   const azCli = await getAzCliHelper();
@@ -90,6 +90,7 @@ export async function deploy(
   ) {
     info("Changing subscription context...");
     await azCli.setSubscriptionContext(subscriptionId);
+    info("Subscription context is changed");
   }
 
   // Run the Deployment
@@ -103,7 +104,7 @@ export async function deploy(
         deploymentName,
         parameters,
         failOnStdErr,
-        additionalArguments,
+        additionalArguments
       );
 
     case "tenant":
@@ -115,7 +116,7 @@ export async function deploy(
         deploymentName,
         parameters,
         failOnStdErr,
-        additionalArguments,
+        additionalArguments
       );
 
     case "managementgroup":
@@ -128,7 +129,7 @@ export async function deploy(
         parameters,
         managementGroupId,
         failOnStdErr,
-        additionalArguments,
+        additionalArguments
       );
 
     case "subscription":
@@ -140,12 +141,12 @@ export async function deploy(
         deploymentName,
         parameters,
         failOnStdErr,
-        additionalArguments,
+        additionalArguments
       );
 
     default:
       throw new Error(
-        "Invalid scope. Valid values are: 'resourcegroup', 'tenant', 'managementgroup', 'subscription'",
+        "Invalid scope. Valid values are: 'resourcegroup', 'tenant', 'managementgroup', 'subscription'"
       );
   }
 }

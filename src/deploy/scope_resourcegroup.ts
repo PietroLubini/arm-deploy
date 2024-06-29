@@ -14,7 +14,6 @@ export async function deployResourceGroupScope(
   failOnStdErr: boolean,
   additionalArguments: string | undefined
 ): Promise<DeploymentResult | undefined> {
-  core.info("Deploying to resource group scope...");
   // Check if resourceGroupName is set
   if (!resourceGroupName) {
     throw Error("ResourceGroup name must be set.");

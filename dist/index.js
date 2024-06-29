@@ -4044,7 +4044,6 @@ const core = __importStar(__nccwpck_require__(2186));
 const utils_1 = __nccwpck_require__(239);
 function deployResourceGroupScope(azCli, resourceGroupName, template, deploymentMode, deploymentName, parameters, failOnStdErr, additionalArguments) {
     return __awaiter(this, void 0, void 0, function* () {
-        core.info("Deploying to resource group scope...");
         // Check if resourceGroupName is set
         if (!resourceGroupName) {
             throw Error("ResourceGroup name must be set.");
@@ -4305,9 +4304,8 @@ function deploy(options) {
         if (scope !== "tenant" &&
             scope !== "managementgroup" &&
             subscriptionId !== "") {
-            (0, core_1.info)(`[1] Changing subscription context to ${subscriptionId}...`);
+            (0, core_1.info)("Changing subscription context to...");
             yield azCli.setSubscriptionContext(subscriptionId);
-            (0, core_1.info)("[1] Subscription context is changed");
         }
         // Run the Deployment
         switch (scope) {
@@ -4486,12 +4484,11 @@ function callAzCli(azPath, command, options) {
                 stderr += data.toString();
             },
         };
-        core.info(`Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}. Command: ${JSON.stringify(command)}`);
         try {
             return yield (0, exec_1.exec)(`"${azPath}" ${command}`, [], options);
         }
         catch (e) {
-            core.info(`Standard Error Output: ${stderr}`);
+            core.error(`Command execution's stderr: ${stderr}`);
             throw e;
         }
     });
@@ -4694,14 +4691,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 const main_1 = __nccwpck_require__(399);
-const core_1 = __nccwpck_require__(2186);
-try {
-    (0, main_1.main)();
-}
-catch (err) {
-    (0, core_1.error)("Global error occurred");
-    (0, core_1.error)(err);
-}
+(0, main_1.main)();
 
 })();
 

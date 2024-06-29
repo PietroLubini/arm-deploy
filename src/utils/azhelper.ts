@@ -112,13 +112,10 @@ async function callAzCli(
       stderr += data.toString();
     },
   };
-  core.info(
-    `Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}. Command: ${JSON.stringify(command)}`
-  );
   try {
     return await exec(`"${azPath}" ${command}`, [], options);
   } catch (e) {
-    core.info(`Standard Error Output: ${stderr}`);
+    core.error(`Command execution's stderr: ${stderr}`);
     throw e;
   }
 }

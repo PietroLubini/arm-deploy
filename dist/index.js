@@ -4044,6 +4044,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const utils_1 = __nccwpck_require__(239);
 function deployResourceGroupScope(azCli, resourceGroupName, template, deploymentMode, deploymentName, parameters, failOnStdErr, additionalArguments) {
     return __awaiter(this, void 0, void 0, function* () {
+        core.info("Deploying to resource group scope...");
         // Check if resourceGroupName is set
         if (!resourceGroupName) {
             throw Error("ResourceGroup name must be set.");
@@ -4304,8 +4305,9 @@ function deploy(options) {
         if (scope !== "tenant" &&
             scope !== "managementgroup" &&
             subscriptionId !== "") {
-            (0, core_1.info)("Changing subscription context...");
+            (0, core_1.info)("[1] Changing subscription context...");
             yield azCli.setSubscriptionContext(subscriptionId);
+            (0, core_1.info)("[1] Subscription context is changed");
         }
         // Run the Deployment
         switch (scope) {
@@ -4679,7 +4681,14 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 const main_1 = __nccwpck_require__(399);
-(0, main_1.main)();
+const core_1 = __nccwpck_require__(2186);
+try {
+    (0, main_1.main)();
+}
+catch (err) {
+    (0, core_1.error)("Global error occurred");
+    (0, core_1.error)(err);
+}
 
 })();
 

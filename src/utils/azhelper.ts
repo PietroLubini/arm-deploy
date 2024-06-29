@@ -112,6 +112,9 @@ async function callAzCli(
       stderr += data.toString();
     },
   };
+  core.info(
+    `Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`
+  );
   try {
     return await exec(`"${azPath}" ${command}`, [], options);
   } catch (e) {

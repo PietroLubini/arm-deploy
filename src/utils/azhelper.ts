@@ -30,7 +30,7 @@ async function resourceGroupExists(azPath: string, resourceGroupName: string) {
   const exitCode = await callAzCli(
     azPath,
     `group show --resource-group ${resourceGroupName}`,
-    { silent: true, ignoreReturnCode: true },
+    { silent: true, ignoreReturnCode: true }
   );
 
   return exitCode === 0;
@@ -68,7 +68,7 @@ async function deploy(azPath: string, command: string, failOnStdErr: boolean) {
 
   if (hasStdErr && failOnStdErr) {
     throw new Error(
-      "Deployment process failed as some lines were written to stderr",
+      "Deployment process failed as some lines were written to stderr"
     );
   }
 
@@ -80,7 +80,7 @@ async function deploy(azPath: string, command: string, failOnStdErr: boolean) {
 async function validate(
   azPath: string,
   command: string,
-  failOnNonZeroExit: boolean,
+  failOnNonZeroExit: boolean
 ) {
   const options: ExecOptions = {
     silent: true,
@@ -104,7 +104,18 @@ async function validate(
 async function callAzCli(
   azPath: string,
   command: string,
-  options: ExecOptions,
+  options: ExecOptions
 ) {
-  return await exec(`"${azPath}" ${command}`, [], options);
+  core.info(
+    `Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`
+  );
+  process.stderr.on("data", (data) => {
+    console.error(`Standard Error Output: ${data}`);
+  });
+  try {
+    return await exec(`"${azPath}" ${command}`, [], options);
+  } catch (e) {
+    core.error(e as Error);
+    throw e;
+  }
 }

@@ -88,7 +88,7 @@ export async function deploy(
     scope !== "managementgroup" &&
     subscriptionId !== ""
   ) {
-    info("[1] Changing subscription context...");
+    info(`[1] Changing subscription context to ${subscriptionId}...`);
     await azCli.setSubscriptionContext(subscriptionId);
     info("[1] Subscription context is changed");
   }

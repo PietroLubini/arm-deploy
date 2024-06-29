@@ -4305,7 +4305,7 @@ function deploy(options) {
         if (scope !== "tenant" &&
             scope !== "managementgroup" &&
             subscriptionId !== "") {
-            (0, core_1.info)("[1] Changing subscription context...");
+            (0, core_1.info)(`[1] Changing subscription context to ${subscriptionId}...`);
             yield azCli.setSubscriptionContext(subscriptionId);
             (0, core_1.info)("[1] Subscription context is changed");
         }
@@ -4480,7 +4480,17 @@ function validate(azPath, command, failOnNonZeroExit) {
 }
 function callAzCli(azPath, command, options) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield (0, exec_1.exec)(`"${azPath}" ${command}`, [], options);
+        core.info(`Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`);
+        process.stderr.on("data", (data) => {
+            console.error(`Standard Error Output: ${data}`);
+        });
+        try {
+            return yield (0, exec_1.exec)(`"${azPath}" ${command}`, [], options);
+        }
+        catch (e) {
+            core.error(e);
+            throw e;
+        }
     });
 }
 

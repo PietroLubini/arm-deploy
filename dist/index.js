@@ -4484,6 +4484,7 @@ function callAzCli(azPath, command, options) {
                 stderr += data.toString();
             },
         };
+        core.info(`Executing command: '"${azPath}" ${command}' with options: ${JSON.stringify(options)}`);
         try {
             return yield (0, exec_1.exec)(`"${azPath}" ${command}`, [], options);
         }
